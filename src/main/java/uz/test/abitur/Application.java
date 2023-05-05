@@ -26,6 +26,7 @@ public class Application {
         javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(formatter));
         javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(formatter));
         objectMapper.registerModule(javaTimeModule);
+
         return objectMapper;
     }
 
