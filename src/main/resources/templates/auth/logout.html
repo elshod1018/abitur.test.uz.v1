@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments :: head(~{::title},~{::link})}">
+    <title>Logout </title>
+    <link rel="stylesheet" href="">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4" style="margin: auto;margin-top: 15%">
+            <form method="post" th:action="@{/auth/logout}">
+                <div class="alert alert-danger">
+                    Are you sure sign out ?
+                </div>
+                <a th:href="@{/home}" class="btn custom_close_btn">Back</a>
+                <button type="submit" class="btn custom_btn ">Yes</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

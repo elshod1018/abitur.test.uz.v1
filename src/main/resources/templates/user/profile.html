@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments :: head(~{::title},~{::link})}">
+    <meta charset="UTF-8">
+    <title>Questions</title>
+    <link rel="stylesheet" href="">
+
+</head>
+<body>
+<section th:replace="~{fragments :: navbar}"></section>
+<form method="post" action="/users/profile" style="width: 100%" enctype="multipart/form-data">
+    <p class="text-center m-b-md" style="margin-top: 30px">
+        <img th:src="@{'/documents/download/'+${user.profilePhotoGeneratedName}}"
+             loading="lazy" th:if="${user.profilePhotoGeneratedName ne null}"
+             th:alt="${user.firstName}" style="border-radius:50%;width: 150px;height: 150px;">
+        <img src="/img/avatar.png" loading="lazy" th:if="${user.profilePhotoGeneratedName eq null}"
+             th:alt="${user.firstName}" style="border-radius:50%;width: 150px;height: 150px;">
+    </p>
+    <div class="col-md-4" style="margin: auto">
+        <div class="mb-3">
+            <label for="profilePicture" class="form-label">Choose Profile Image</label>
+            <input type="file" class="form-control" name="profilePicture" id="profilePicture">
+        </div>
+        <div class="mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" class="form-control" id="firstName" name="firstName"
+                   th:value="${user.firstName}" required>
+        </div>
+        <div class="mb-3">
+            <label for="middleName" class="form-label">Middle Name</label>
+            <input type="text" class="form-control" id="middleName" name="middleName"
+                   th:value="${user.middleName}">
+        </div>
+        <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" class="form-control" id="lastName" name="lastName"
+                   th:value="${user.lastName}" required>
+        </div>
+        <div class="mb-3" style="width: 90%;margin: auto 87.5%">
+            <button type="submit" class="btn custom_btn">Submit</button>
+        </div>
+    </div>
+</form>
+
+<script th:src="@{/js/main.js}"></script>
+<section th:replace="~{fragments :: js_links}">
+</section>
+</body>
+</html>

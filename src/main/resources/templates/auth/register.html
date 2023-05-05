@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head th:replace="~{fragments :: head(~{::title},~{::link})}">
+    <title>Register </title>
+    <link rel="stylesheet" href="">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6" style="margin: auto">
+            <h1 class="mt-2 text-center">Register Page</h1>
+            <form method="post" action="/auth/register" th:object="${user}">
+                <div class="mb-3">
+                    <label for="FirstName" class="form-label">First Name</label>
+                    <span th:if="${#fields.hasErrors('firstName')}">
+                        <p th:each="er : ${#fields.errors('firstName')}" th:text="${er}" class="text-danger"></p>
+                    </span>
+                    <input type="text" class="form-control" id="FirstName" name="firstName" required
+                           th:field="*{firstName}">
+                </div>
+                <div class="mb-3">
+                    <label for="LastName" class="form-label">Last Name</label>
+                    <span th:if="${#fields.hasErrors('lastName')}">
+                        <p th:each="er : ${#fields.errors('lastName')}" th:text="${er}" class="text-danger"></p>
+                    </span>
+                    <input type="text" class="form-control" id="LastName" name="lastName" required
+                           th:field="*{lastName}">
+                </div>
+                <div class="mb-3">
+                    <label for="PhoneNumber" class="form-label">Phone Number</label>
+                    <span th:if="${#fields.hasErrors('phoneNumber')}">
+                        <p th:each="er : ${#fields.errors('phoneNumber')}" th:text="${er}" class="text-danger"></p>
+                    </span>
+                    <input type="text" class="form-control" id="PhoneNumber" name="phoneNumber" required
+                           th:field="*{phoneNumber}">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <span th:if="${#fields.hasErrors('password')}">
+                        <p th:each="er : ${#fields.errors('password')}" th:text="${er}" class="text-danger"></p>
+                    </span>
+                    <input type="password" class="form-control" id="password" name="password">
+                </div>
+                <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <span th:if="${#fields.hasErrors('confirmPassword')}">
+                        <p th:each="er : ${#fields.errors('confirmPassword')}" th:text="${er}" class="text-danger"></p>
+                    </span>
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+                </div>
+                <button type="submit" class="btn custom_btn">Register</button>
+                <span>Already have account ? <a class="link-info" th:href="@{/auth/login}">Login</a></span>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,60 @@
+
+body {
+    background-color: #f1f5f8;
+}
+
+pre {
+    white-space: pre-wrap;
+}
+
+.navbar {
+    background-color: #ececf1 !important;
+}
+
+.navbar a {
+    margin: auto 5px;
+    font-weight: bold;
+    color: rgb(29, 45, 91);
+}
+
+.hovered:hover {
+    scale: 1.2;
+}
+
+.custom_btn {
+    background-color: rgb(29, 45, 91) !important;
+    color: white !important;
+    font-weight: bold;
+}
+
+.custom_btn:hover {
+    background-color: rgb(58, 77, 129) !important;
+}
+
+.custom_update_btn {
+    color: rgb(29, 45, 91) !important;
+    background-color: white !important;
+    border: 1px solid rgb(29, 45, 91) !important;
+    font-weight: bold;
+}
+
+.custom_update_btn:hover {
+    background-color: rgb(204, 204, 220) !important;
+}
+
+.custom_close_btn {
+    color: rgb(29, 45, 91) !important;
+    background-color: #f1f5f8 !important;
+    border: 1px solid rgb(29, 45, 91) !important;
+}
+
+.custom_close_btn:hover {
+    background-color: #c6d6ec !important;
+}
+
+.profile_input {
+    width: 40%;
+    margin-left: 6%;
+    display: inline-block;
+}
+

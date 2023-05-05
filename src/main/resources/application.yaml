@@ -1,0 +1,67 @@
+SPRING_PROFILES_ACTIVE: dev
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE}
+telegram:
+  bot:
+    token: '5687797236:AAGBbO9ZdZ5eApH11J_6zUknG_qIEK7478s'
+    chatId: '5174610361'
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:postgresql://${PROD_DB_HOST}:${PROD_DB_PORT}/${PROD_DB_NAME}
+    username: ${PROD_DB_USERNAME}
+    password: ${PROD_DB_PASSWORD}
+firebase:
+  type: ${firebase_type}
+  project_id: ${firebase_project_id}
+  private_key_id: ${firebase_private_key_id}
+  private_key: ${firebase_private_key}
+  client_email: ${firebase_client_email}
+  client_id: ${firebase_client_id}
+  auth_uri: ${firebase_auth_uri}
+  token_uri: ${firebase_token_uri}
+  auth_provider_x509_cert_url: ${firebase_auth_provider_x509_cert_url}
+  client_x509_cert_url: ${firebase_client_x509_cert_url}
+twilio:
+  sid: ${twilio_sid}
+  token: ${twilio_token}
+  from:
+    number: ${twilio_from_number}
+super_admin_1: ${super_admin1}
+super_admin_2: ${super_admin2}
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:postgresql://localhost:5432/abitur?currentSchema=test_uz
+    username: postgres
+    password: 123
+    driverClassName: org.postgresql.Driver
+firebase:
+  type: service_account
+  project_id: abitur-test-uz
+  private_key_id: b612cf0645367e4dba0591976b31f523d8201daa
+  private_key: -----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDqUsK6+9aWdx+7\nqBcv9WZSW+fAbzUn2wwLWrI1KrbT0m13tBC/6dvijuMLGtNUSXgwLgynxy41038e\nFmNX+3tkx4wTlI+gcazGMw7lafWju29/4sp54IyjB7jyyAR25gtL7TDbtsALQjzw\nR+vB77AFKgoYU8RzJSP12OdES03hCU87p1NhUjSDxdUDaA7zOkESAC9MhvLp0Rlr\nx9MYKGkl0OJ2X7k323/Ui36HpXG6n4DuCc7PhDgmvoFhs10JU94+/Gzlu0/VL5pU\nU9qiO7F04p9Xj5BkRVlQ+h67J+1FIEP/t1YyWyNtciZ2Q5LMHnJvl1V7rL6f8Qxg\njFTq8KfRAgMBAAECggEACC7N8VLuWFiOXYKmFaUJltZyCkav6eWEvwhCqSfl1NGY\nREn/3D3V0Yx5GggMqXi7113iUAEdCGDrg2DXhQjpkxhDWGMznVAe7xh1HJaVzwsS\nfposRTON4bsZLrREsKTBr/v3XPLds77zSxZN4brFsDZ6vgT92yIIxpL1p41EKde0\n5ttRdLAzTvgre9Ukv/cZRSbdmfXCQgWSRwsx88o7/kuTx4BOfbn7qSSsvMaPEgD8\nl3QQmPoTwJxmNdg5KnJUAwCJBO5GDrgn/pNac5gY/Sov36ie3jiznZ3Vyt5gtIvV\n3Bxh+95QbQoKruXioWlN3U9SdPZgG1/NGXxHkBwagQKBgQD3ahpDUSpQNSFtm7U3\nHYVksBZDrhyS3BerriT1kZYOgU9UsOfBfWqbxkeBIyPpQlLYNGka+gJBu9LuF+RP\nMrr2S3vgbS5YwDgKnp7BTfJsKpI+/s5waC1iQF/zBQClM+5VX/cxn1uG8I2V+5ei\naO1XAntlOacWyfs4Pt6k0Ap2QQKBgQDydFzxadWJfOI9Cet2NoIX2UO6R/qwZFI4\neD7hDQSAQFuR35PnrEs8RO0o5ZIJCwzY/5O/z+UuuxrpPNAS1sBzzlw04+awskG9\nr261pF7n40mXN1LYKXGt2LFkMNeWticFxUP/k8Ma+SRpAA3aZvltWV+VHjuB3DTk\nKj/EuiptkQKBgQDazG0/XPcDiYjvasT+YdAGtCZsYfyI77TLMa0jskU2vKpQZkX9\n+hCeg+HWVSI79VhYNTlCDxiR0y19O4m/dEic6TI6zbMv74Vf9tjEcE9T0u4UYbhk\n9ew0uGNiAemJL3y06bIsoxYJJpC/s4hsq0hBK0O+yBZ489SD8C1rKUQnQQKBgQCb\n8f5qBMGlSh8WVZAOm+a3QjaO1YdH927vBWCkTkQr3blILT8rzyUhIdBM8sQobuQX\nmuPEhwqJMS2RAV1wEJL+qaejGUcjNbSVNgaGbK/ihM2rppjxkk6dG/iVUdkJBiY5\nTvV6qObgLYmew7slVABwtgCFoEl0MFgQvaAAgCGUEQKBgDopFlF1ZsmKkZ2dIkL0\n+U03J5uxGaMCLgyq8LQABSF6GT89H98bvDHRF4jEDqIC8D5sQp4Psa2sVDPwmQjX\nYrw91zqaoyfXE5vr6egZd3DmpEGe41KNEuK3/4OiFtL3FKnRhugdphDSC8/ECINB\nR/fxUj4ImIuXBI9nc3sSGfJH\n-----END PRIVATE KEY-----\n
+  client_email: firebase-adminsdk-knvz4@abitur-test-uz.iam.gserviceaccount.com
+  client_id: 107163715169237572917
+  auth_uri: https://accounts.google.com/o/oauth2/auth
+  token_uri: https://oauth2.googleapis.com/token
+  auth_provider_x509_cert_url: https://www.googleapis.com/oauth2/v1/certs
+  client_x509_cert_url: https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-knvz4%40abitur-test-uz.iam.gserviceaccount.com
+twilio:
+  sid: AC2bb44224a936e48aba3f3523f31ca8de
+  token: 25244495cda28fb44d949f200b6264de
+  from:
+    number: '+16204458192'
+super_admin_1: '+998934568461'
+super_admin_2: '+998930815351'

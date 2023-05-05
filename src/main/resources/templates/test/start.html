@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head th:replace="~{fragments :: head(~{::title},~{::link})}">
+    <meta charset="UTF-8">
+    <title>Test Start</title>
+    <link rel="stylesheet" href="">
+</head>
+<body sec:authorize="hasRole('USER')">
+<section th:replace="~{fragments :: navbar}"></section>
+
+<div class="col-md-4" style="margin:3% auto">
+    <div class="alert alert-danger" style="margin-bottom: 10px;" role="alert" th:if="${error ne null}">
+        <strong th:text="${error}"></strong>
+    </div>
+    <div class="card">
+        <h5 class="card-header">Choose subjects for start test</h5>
+        <div class="card-body" style="font-size: 20px;color: rgb(29, 45, 91);" id="card_body">
+            <label for="f_subjects_name" class="card-title">Select first Subject : </label>
+            <select id="f_subjects_name" name="firstSubject" style="margin-left: 80px;width: 150px"
+                    onchange="show_second_subject()">
+                <option value="-1">None</option>
+                <option class="text-capitalize"
+                        th:each="subject : ${subjects}"
+                        th:if="${!subject.mandatory}"
+                        th:value="${subject.id}"
+                        th:text="${subject.name}">
+                </option>
+            </select>
+            <br>
+            <br>
+            <label for="s_subjects_name" class="card-title">Select Second Subject : </label>
+            <select id="s_subjects_name" style="margin-left: 50px;width: 150px">
+                <option value="-1">None</option>
+            </select>
+            <br>
+            <br>
+            <div class="form-check form-switch">
+                <label class="form-check-label" for="flexSwitchCheckDefault">With Mandatory Subjects</label>
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="button" class="btn hovered custom_btn" onclick="start_test()"
+                    data-bs-target="#startTestModal" data-bs-toggle="modal"
+                    style="margin-left:82%;">
+                Start Test
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="startTestModal" aria-hidden="true" aria-labelledby="StartTestModalLabel"
+     tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="StartTestModalLabel">Start Test</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/test/start">
+                    <input type="hidden" name="firstSubjectId" id="f_subject_id">
+                    <input type="hidden" name="secondSubjectId" id="s_subject_id">
+                    <input type="hidden" name="mandatory" id="is_mandatory">
+                    <div class="alert alert-danger">
+                        <p>Are you sure to start test. You have only <i id="test_time"></i> minutes</p>
+                    </div>
+                    <button type="button" class="btn custom_close_btn" data-bs-dismiss="modal" autofocus>Close</button>
+                    <button type="submit" class="btn custom_btn"> Yes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/main.js}"></script>
+<section th:replace="~{fragments :: js_links}">
+</section>
+</body>
+</html>

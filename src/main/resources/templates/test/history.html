@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments :: head(~{::title},~{::link})}">
+    <meta charset="UTF-8">
+    <title>History</title>
+    <link rel="stylesheet" href="">
+</head>
+<body>
+<section th:replace="~{fragments :: navbar}"></section>
+<div class="row">
+    <div class="col-md-8" style="margin: auto">
+        <table class="table table-striped" style="margin-top: 20px">
+            <thead>
+            <tr>
+                <th scope="col">T/r</th>
+                <th scope="col">Started At</th>
+                <th scope="col">Finished At</th>
+                <th scope="col">First subject</th>
+                <th scope="col">Second subject</th>
+                <th scope="col">Third subject</th>
+                <th scope="col">Fourth subject</th>
+                <th scope="col">Fifth subject</th>
+                <th scope="col">Total score</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="history,cnt : ${histories}">
+                <td th:text="${cnt.count}"></td>
+                <td th:text="${#temporals.format(history.startedAt, 'dd-MM-yyyy HH:mm')}"></td>
+                <td th:text="${#temporals.format(history.finishedAt, 'dd-MM-yyyy HH:mm')}"></td>
+                <td th:text="${history.firstSubject}"></td>
+                <td th:text="${history.secondSubject}"></td>
+                <td th:text="${history.thirdSubject}"></td>
+                <td th:text="${history.fourthSubject}"></td>
+                <td th:text="${history.fifthSubject}"></td>
+                <td th:text="${history.totalScore}"></td>
+                <td>
+                    <a th:href="@{'/test/continue/'+${history.testSessionId}}" class="btn custom_btn hovered"
+                       th:if="${history.finishedAt.isAfter(T(java.time.LocalDateTime).now().plusSeconds(30))}">
+                        Continue
+                    </a>
+                    <a th:href="@{'/documents/download/'+${history.documentId}}" class="btn custom_btn hovered"
+                       th:if="${history.finishedAt.isBefore(T(java.time.LocalDateTime).now().plusMinutes(1))}">
+                        <i class="fa fa-download"></i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<script th:src="@{/js/main.js}"></script>
+<section th:replace="~{fragments :: js_links}"></section>
+</body>
+</html>

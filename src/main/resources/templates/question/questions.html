@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head th:replace="~{fragments :: head(~{::title},~{::link})}">
+    <meta charset="UTF-8">
+    <title>Questions</title>
+    <link rel="stylesheet" href="">
+
+</head>
+<body sec:authorize="hasAnyRole('ADMIN','SUPER_ADMIN')">
+<section th:replace="~{fragments :: navbar}"></section>
+
+<div class="col-md-8" style="margin:10px auto 5px">
+    <a class="btn custom_update_btn" style="margin:10px 3px 5px"
+       th:href="@{'/questions/all'}">All</a>
+    <a class="btn custom_update_btn" style="margin:10px 3px 5px" th:each="subject : ${subjects}"
+       th:href="@{'/questions/all?subjectId='+${subject.id}}" th:if="${subject.mandatory}"
+       th:text="${subject.name}+' (Majburiy)'"/>
+    <a class="btn custom_update_btn" style="margin:10px 3px 5px" th:each="subject : ${subjects}"
+       th:href="@{'/questions/all?subjectId='+${subject.id}}" th:if="${!subject.mandatory}" th:text="${subject.name}"/>
+</div>
+
+
+<div class="row">
+    <div class="col-md-8" style="margin: auto">
+        <table class="table table-striped" style="margin-top: 20px">
+            <thead>
+            <tr style="width: 100%">
+                <th style="width: 2%">T/r</th>
+                <th style="width: 10%">Subject</th>
+                <th style="width: 25%">Question</th>
+                <th style="width: 13%">First Answer</th>
+                <th style="width: 13%">Second Answer</th>
+                <th style="width: 13%">Third Answer</th>
+                <th style="width: 13%">Fourth Answer</th>
+                <th style="width: 12%">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="question,cnt : ${questions}">
+                <td th:text="${cnt.count}"></td>
+                <td th:text="${question.subject.name}+' (Majburiy)'" th:if="${question.subject.mandatory}"></td>
+                <td th:text="${question.subject.name}" th:if="${!question.subject.mandatory}"></td>
+                <td>
+                    <pre th:text="${question.text}"></pre>
+                </td>
+                <td th:each="answer : ${question.answers}" th:if="${answer.isTrue}">
+                    [[${answer.text}]] <i class="fa fa-check" aria-hidden="true" style="color: green"></i>
+                </td>
+                <td th:each="answer : ${question.answers}" th:if="${!answer.isTrue}">
+                    [[${answer.text}]] <i class="fa fa-times" aria-hidden="true" style="color: red"></i>
+                </td>
+                <td>
+                    <button class="btn custom_update_btn " data-bs-target="#updateQuestionModal" data-bs-toggle="modal"
+                            th:onclick="update_question([[${question.getId()}]])">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    </button>
+                    ||
+                    <button class="btn custom_update_btn" data-bs-target="#deleteQuestionModal" data-bs-toggle="modal"
+                            th:onclick="delete_question([[${question.id}]])">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <button class="btn custom_btn " data-bs-target="#addQuestionModal" data-bs-toggle="modal"
+                style="margin-top: 10px;width: 100%">
+            <i class="fa fa-plus" aria-hidden="true"></i> Add Question
+        </button>
+    </div>
+</div>
+
+
+<div class="modal fade" id="addQuestionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-center" id="exampleModalAdd">Add question</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" action="/questions/create">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <select class="form-select" aria-label="Default select example" name="subjectId" required>
+                            <option th:each="subject : ${subjects}" th:value="${subject.id}"
+                                    th:if="${subject.mandatory}"
+                                    th:text="${subject.name}+' (Majburiy)'"/>
+                            <option th:each="subject : ${subjects}" th:value="${subject.id}"
+                                    th:if="${!subject.mandatory}"
+                                    th:text="${subject.name}"/>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="questionText" class="form-label">Question text</label>
+                        <input type="text" class="form-control" id="questionText" name="text" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="firstAnswer" class="form-label">First Answer</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="rightAnswer" id="firstAnswerRadio"
+                                   value="1">
+                            <input type="text" class="form-control" id="firstAnswer" name="firstAnswer" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="secondAnswer" class="form-label">Second Answer</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="rightAnswer" id="secondAnswerRadio"
+                                   value="2">
+                            <input type="text" class="form-control" id="secondAnswer" name="secondAnswer" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="thirdAnswer" class="form-label">Third Answer</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="rightAnswer" id="thirdAnswerRadio"
+                                   value="3">
+                            <input type="text" class="form-control" id="thirdAnswer" name="thirdAnswer" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fourthAnswer" class="form-label">Fourth Answer</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="rightAnswer" id="fourthAnswerRadio"
+                                   value="4">
+                            <input type="text" class="form-control" id="fourthAnswer" name="fourthAnswer" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn custom_close_btn" data-bs-dismiss="modal" autofocus>Close</button>
+                    <button type="submit" class="btn custom_btn">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="updateQuestionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-center" id="exampleModalUpdate">Update Question</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" action="/questions/update">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <input type="hidden" class="form-control" id="u_id" name="id">
+                        <select class="form-select" aria-label="Default select example" name="subjectId"
+                                id="u_questionSubject" required>
+                            <option th:each="subject : ${subjects}" th:value="${subject.id}"
+                                    th:if="${subject.mandatory}" th:text="${subject.name}+' (Majburiy)'"/>
+                            <option th:each="subject : ${subjects}" th:value="${subject.id}"
+                                    th:if="${!subject.mandatory}" th:text="${subject.name}"/>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="u_questionText" class="form-label">Question text</label>
+                        <input type="text" class="form-control" id="u_questionText" name="text" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="u_firstAnswer" class="form-label">First Answer</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="rightAnswer" id="u_firstAnswerRadio"
+                                   value="1">
+                            <input type="text" class="form-control" id="u_firstAnswer" name="firstAnswer" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="u_secondAnswer" class="form-label">Second Answer</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="rightAnswer" id="u_secondAnswerRadio"
+                                   value="2">
+                            <input type="text" class="form-control" id="u_secondAnswer" name="secondAnswer" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="u_thirdAnswer" class="form-label">Third Answer</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="rightAnswer" id="u_thirdAnswerRadio"
+                                   value="3">
+                            <input type="text" class="form-control" id="u_thirdAnswer" name="thirdAnswer" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="u_fourthAnswer" class="form-label">Fourth Answer</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="rightAnswer" id="u_fourthAnswerRadio"
+                                   value="4">
+                            <input type="text" class="form-control" id="u_fourthAnswer" name="fourthAnswer" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn custom_close_btn" data-bs-dismiss="modal" autofocus>Close</button>
+                    <button type="submit" class="btn custom_btn">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteQuestionModal" aria-hidden="true" aria-labelledby="DeleteQuestionModalLabel"
+     tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="DeleteQuestionModalLabel">Delete Question</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/questions/delete">
+                    <input type="hidden" name="id" id="d_id">
+                    <div class="alert alert-danger">
+                        <p>Are you sure delete question <i id="d_text"></i></p>
+                    </div>
+                    <button type="button" class="btn custom_close_btn" data-bs-dismiss="modal" autofocus>Close</button>
+                    <button type="submit" class="btn custom_update_btn ">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/main.js}"></script>
+<section th:replace="~{fragments :: js_links}">
+</section>
+</body>
+</html>

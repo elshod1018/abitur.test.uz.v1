@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head th:replace="~{fragments :: head(~{::title},~{::link})}">
+    <title>Home </title>
+    <link rel="stylesheet" href="">
+    <style>
+        body {
+            background-color: #f1f5f8;
+        }
+    </style>
+</head>
+<body>
+<section th:replace="~{fragments :: navbar}"></section>
+
+<div class="row" style="width: 80%;margin: 10px auto">
+
+    <div class="col-md-12">
+        <div class="panel alert alert-info p-y-x" style="color: #2f73c8;background-color: #d9e7f9">
+            <div class="panel-body d-flex align-items-center" style="border: 2px #2f73c8 !important;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                <span class="m-l-sm" style="margin-left: 10px"> Sayt test rejimida ishlamoqda. Kompyuterda ochishga maslahat beriladi !</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4" th:each="i_new : ${news}">
+        <div class="card p" style="height: 120px;margin-top:10px;background-color:#ffffff;">
+            <div class="card-body">
+                <h5 class="card-title" th:utext="${i_new.title}"></h5>
+                <p class="card-text" th:utext="${i_new.title}"></p>
+                <p class="new-footer" style="color: #ccc;position: absolute;top:80px;left: 15px"
+                   th:text="${#temporals.format(i_new.createdAt, 'dd.MM.yyyy')}"></p>
+                <button class="btn custom_update_btn  hovered" data-bs-target="#updateNewsModal" data-bs-toggle="modal"
+                        sec:authorize="hasAnyRole('ADMIN','SUPER_ADMIN')"
+                        th:onclick="update_news([[${i_new.id}]])"
+                        style="font-size: 11px;border: 1px solid rgb(29,45,91);padding: 2px 6px;
+                            color: #fff;border-radius: 4px;
+                            position: absolute;top:80px;right:89px">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </button>
+                <button class="btn custom_update_btn  hovered" data-bs-target="#deleteNewsModal" data-bs-toggle="modal"
+                        sec:authorize="hasAnyRole('ADMIN','SUPER_ADMIN')"
+                        th:onclick="delete_news([[${i_new.id}]])"
+                        style="font-size: 11px;border: 1px solid rgb(29,45,91);padding: 2px 6px;
+                            color: #fff;border-radius: 4px;
+                            position: absolute;top:80px;right:60px">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                </button>
+
+                <button type="button" class="card-link  hovered" th:onclick="new_info([[${i_new.id}]])"
+                        data-bs-toggle="modal" data-bs-target="#InfoModal"
+                        style="font-size: 11px;border: 1px solid rgb(29,45,91);padding: 2px 6px;
+                            color: #fff;border-radius: 4px;background-color: rgb(29,45,91);
+                            position: absolute;top:80px;right:15px">
+                    More
+                </button>
+            </div>
+        </div>
+    </div>
+    <button class="btn custom_btn" data-bs-target="#addNewsModal" data-bs-toggle="modal"
+            style="width: 99%;margin:20px auto" sec:authorize="hasAnyRole('ADMIN','SUPER_ADMIN')">
+        <i class="fa fa-plus" aria-hidden="true"></i> Add News
+    </button>
+</div>
+
+
+<div class="modal fade" id="InfoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="news-title"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div style="width: 100%" id="news-body">
+
+                </div>
+                <div id="news-time" style="color: #ccc;">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn custom_close_btn" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addNewsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-center" id="exampleModalAdd">Add News</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" action="/news/create">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="newsTitle" class="form-label">News Title</label>
+                        <input type="text" class="form-control" id="newsTitle" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            <textarea class="form-control" placeholder="Leave a body here" id="newsBody" name="body"
+                                      required style="height: 100px"></textarea>
+                            <label for="newsBody">News Body</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn custom_close_btn" data-bs-dismiss="modal" autofocus>Close</button>
+                    <button type="submit" class="btn custom_btn">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="updateNewsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-center" id="exampleModalUpdate">Update News</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" action="/news/update">
+                <div class="modal-body">
+                    <input type="hidden" class="form-control" id="u_id" name="id">
+                    <div class="mb-3">
+                        <label for="u_title" class="form-label">News Title</label>
+                        <input type="text" class="form-control" id="u_title" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            <textarea class="form-control" placeholder="Leave a body here" id="u_body" name="body"
+                                      required style="height: 100px"></textarea>
+                            <label for="u_body">News Body</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn custom_close_btn" data-bs-dismiss="modal" autofocus>Close</button>
+                    <button type="submit" class="btn custom_update_btn">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteNewsModal" aria-hidden="true" aria-labelledby="DeleteNewsModalLabel"
+     tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="DeleteNewsModalLabel">Delete News</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/news/delete">
+                    <input type="hidden" name="id" id="d_id">
+                    <div class="alert alert-danger">
+                        <p>Are you sure delete news <i id="d_title"></i></p>
+                    </div>
+                    <button type="button" class="btn custom_close_btn" data-bs-dismiss="modal" autofocus>Close</button>
+                    <button type="submit" class="btn custom_update_btn ">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/main.js}"></script>
+<section th:replace="~{fragments :: js_links}"></section>
+</body>
+</html>

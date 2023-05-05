@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments :: head(~{::title},~{::link})}">
+    <meta charset="UTF-8">
+    <title>Test </title>
+    <link rel="stylesheet" href="">
+</head>
+<body sec:authorize="hasRole('USER')">
+
+<div>
+    <form method="post"
+          style="margin:40px 70% 0;"
+          th:action="@{'/test/finish/'+${testSession.id}}" class="hovered">
+        <button type="submit" class="btn"
+                style="background-color: rgb(29, 45, 91);color: white">
+            Finish
+        </button>
+    </form>
+</div>
+<div class="container" style="width: 60%;margin: 30px auto 20px;">
+    <div style="margin-left: 10px">
+        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+            <th:block th:if="${testSession.firstSubject ne null}">
+                <input type="radio" class="btn-check" name="btnradio" id="firstSubject" autocomplete="off"
+                       th:onchange="get_session_subject_questions([[${testSession.id}]],[[${testSession.firstSubject.id}]])">
+                <label class="btn btn-outline-primary" for="firstSubject"
+                       th:text="${testSession.firstSubject.name}+' (Majburiy)'"
+                       th:if="${testSession.firstSubject.mandatory}"></label>
+                <label class="btn btn-outline-primary" for="firstSubject"
+                       th:text="${testSession.firstSubject.name}"
+                       th:if="${!testSession.firstSubject.mandatory}"></label>
+            </th:block>
+            <th:block th:if="${testSession.secondSubject ne null}">
+                <input type="radio" class="btn-check" name="btnradio" id="secondSubject" autocomplete="off"
+                       th:onchange="get_session_subject_questions([[${testSession.id}]],[[${testSession.secondSubject.id}]])">
+                <label class="btn btn-outline-primary" for="secondSubject"
+                       th:text="${testSession.secondSubject.name}+' (Majburiy)'"
+                       th:if="${testSession.secondSubject.mandatory}"></label>
+                <label class="btn btn-outline-primary" for="secondSubject"
+                       th:text="${testSession.secondSubject.name}"
+                       th:if="${!testSession.secondSubject.mandatory}"></label>
+            </th:block>
+            <th:block th:if="${testSession.thirdSubject ne null}">
+                <input type="radio" class="btn-check" name="btnradio" id="thirdSubject" autocomplete="off"
+                       th:onchange="get_session_subject_questions([[${testSession.id}]],[[${testSession.thirdSubject.id}]])">
+                <label class="btn btn-outline-primary" for="thirdSubject"
+                       th:text="${testSession.thirdSubject.name}+' (Majburiy)'"
+                       th:if="${testSession.thirdSubject.mandatory}"></label>
+                <label class="btn btn-outline-primary" for="thirdSubject"
+                       th:text="${testSession.thirdSubject.name}"
+                       th:if="${!testSession.thirdSubject.mandatory}"></label>
+            </th:block>
+
+            <th:block th:if="${testSession.fourthSubject ne null}">
+                <input type="radio" class="btn-check" name="btnradio" id="fourthSubject" autocomplete="off"
+                       th:onchange="get_session_subject_questions([[${testSession.id}]],[[${testSession.fourthSubject.id}]])">
+                <label class="btn btn-outline-primary" for="fourthSubject"
+                       th:text="${testSession.fourthSubject.name}+' (Majburiy)'"
+                       th:if="${testSession.fourthSubject.mandatory}"></label>
+                <label class="btn btn-outline-primary" for="fourthSubject"
+                       th:text="${testSession.fourthSubject.name}"
+                       th:if="${!testSession.fourthSubject.mandatory}"></label>
+            </th:block>
+
+            <th:block th:if="${testSession.fifthSubject ne null}">
+                <input type="radio" class="btn-check" name="btnradio" id="fifthSubject" autocomplete="off"
+                       th:onchange="get_session_subject_questions([[${testSession.id}]],[[${testSession.fifthSubject.id}]])">
+                <label class="btn btn-outline-primary" for="fifthSubject"
+                       th:text="${testSession.fifthSubject.name}+' (Majburiy)'"
+                       th:if="${testSession.fifthSubject.mandatory}"></label>
+                <label class="btn btn-outline-primary" for="fifthSubject"
+                       th:text="${testSession.fifthSubject.name}"
+                       th:if="${!testSession.fifthSubject.mandatory}"></label>
+            </th:block>
+
+        </div>
+        <br>
+        <br>
+
+        <div class="btn-group" role="group" aria-label="Basic radio toggle button group" id="questions_group">
+
+        </div>
+
+        <div style="margin: 25px auto">
+            <div class="" id="one_question">
+
+            </div>
+        </div>
+        <br>
+
+    </div>
+</div>
+
+<script th:src="@{/js/main.js}"></script>
+<section th:replace="~{fragments :: js_links}">
+</section>
+</body>
+</html>

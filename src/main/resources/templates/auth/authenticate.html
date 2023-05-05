@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments :: head(~{::title},~{::link})}">
+    <title>Authentication </title>
+    <link rel="stylesheet" href="">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4" style="margin: auto;margin-top:15%">
+            <h1 class="mt-2 text-center">Authentication Page</h1>
+            <form method="post" th:action="@{/auth/authenticate}">
+                <p th:text="${phoneNumber}"></p>
+                <input type="hidden" th:value="${userId}" name="userId">
+                <div class="mb-3">
+                    <label for="code" class="form-label">
+                        Enter code
+                        <span class="text-danger" th:if="${wrongCode}">Wrong code</span>
+                    </label>
+                    <input type="text" class="form-control" id="code" name="code">
+                </div>
+                <p th:if="${expired}">
+                    <span class="text-danger">Code has expired</span>
+                    <a th:href="@{'/auth/resend/'+${userId}}">Resend code</a>
+                </p>
+                <a th:href="@{/home}" class="btn custom_close_btn">Back</a>
+                <button type="submit" class="btn custom_btn">Yes</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

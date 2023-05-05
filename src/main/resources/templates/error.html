@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments :: head(~{::title},~{::link})}">
+    <title>Error</title>
+    <link rel="stylesheet" href="">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4" style="margin: auto;margin-top: 15%">
+            <div class="alert alert-danger" th:text="${error.errorMessage}">
+
+            </div>
+            <a th:href="@{'/home'}" class="btn custom_close_btn">Back</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

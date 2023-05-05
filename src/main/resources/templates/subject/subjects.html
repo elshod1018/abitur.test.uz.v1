@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head th:replace="~{fragments :: head(~{::title},~{::link})}">
+    <meta charset="UTF-8">
+    <title>Subjects</title>
+    <link rel="stylesheet" href="">
+
+</head>
+<body sec:authorize="hasAnyRole('ADMIN','SUPER_ADMIN')">
+<section th:replace="~{fragments :: navbar}"></section>
+
+
+<div class="row">
+    <div class="col-md-6" style="margin: auto">
+        <table class="table table-striped" style="margin-top: 20px">
+            <thead>
+            <tr>
+                <th scope="col">T/r</th>
+                <th scope="col">Created By</th>
+                <th scope="col">Name</th>
+                <th scope="col">Code</th>
+                <th scope="col">Mandatory</th>
+                <th scope="col">Created At</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="subject,cnt : ${subjects}">
+                <td th:text="${cnt.count}"></td>
+                <td th:text="${subject.createdBy}"></td>
+                <td th:text="${subject.name}"></td>
+                <td th:text="${subject.code}"></td>
+                <td th:if="${subject.mandatory}">
+                    <i class="fa fa-check" aria-hidden="true" style="color: green"></i>
+                </td>
+                <td th:if="${not subject.mandatory}">
+                    <i class="fa fa-times" aria-hidden="true" style="color: red"></i>
+                </td>
+                <td th:text="${#temporals.format(subject.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
+                <td>
+                    <button class="btn custom_update_btn " data-bs-target="#updateSubjectModal" data-bs-toggle="modal"
+                            th:onclick="update_s([[${subject.id}]])">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    </button>
+                    ||
+                    <button class="btn custom_update_btn " data-bs-target="#deleteSubjectModal" data-bs-toggle="modal"
+                            th:onclick="delete_s([[${subject.id}]])">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <button class="btn custom_btn " data-bs-target="#addSubjectModal" data-bs-toggle="modal"
+                style="margin-top: 10px;width: 100%">
+            <i class="fa fa-plus" aria-hidden="true"></i> Add Subject
+        </button>
+    </div>
+</div>
+
+
+<div class="modal fade" id="addSubjectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-center" id="exampleModalAdd">Add subject</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" action="/subjects/create">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="subjectName" class="form-label">Subject Name</label>
+                        <input type="text" class="form-control" id="subjectName" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="subjectCode" class="form-label">Subject code</label>
+                        <input type="text" class="form-control" id="subjectCode" name="code" required>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="isMandatory" name="mandatory">
+                        <label class="form-check-label" for="isMandatory">Is Mandatory</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn custom_close_btn" data-bs-dismiss="modal" autofocus>Close</button>
+                    <button type="submit" class="btn custom_btn">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="updateSubjectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-center" id="exampleModalUpdate">Update subject</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" th:action="@{/subjects/update}">
+                <div class="modal-body">
+                    <input type="hidden" class="form-control" id="u_id" name="id">
+                    <div class="mb-3">
+                        <label for="u_name" class="form-label">Subject Name</label>
+                        <input type="text" class="form-control" id="u_name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="u_code" class="form-label">Subject code</label>
+                        <input type="text" class="form-control" id="u_code" name="code" required>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="u_mandatory" name="mandatory">
+                        <label class="form-check-label" for="u_mandatory">Is Mandatory</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn custom_close_btn" data-bs-dismiss="modal" autofocus>Close</button>
+                    <button type="submit" class="btn custom_update_btn">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteSubjectModal" aria-hidden="true" aria-labelledby="DeleteSubjectModalLabel"
+     tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="DeleteSubjectModalLabel">Delete Subject</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/subjects/delete">
+                    <input type="hidden" name="id" id="d_id">
+                    <div class="alert alert-danger">
+                        <p>Are you sure delete subject <i id="d_name"></i></p>
+                    </div>
+                    <button type="button" class="btn custom_close_btn" data-bs-dismiss="modal" autofocus>Close</button>
+                    <button type="submit" class="btn custom_update_btn ">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/main.js"></script>
+<section th:replace="~{fragments :: js_links}">
+</section>
+</body>
+</html>

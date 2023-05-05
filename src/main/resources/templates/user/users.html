@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments :: head(~{::title},~{::link})}">
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <link rel="stylesheet" href="">
+
+</head>
+<body sec:authorize="hasAnyRole('ADMIN','SUPER_ADMIN')">
+<section th:replace="~{fragments :: navbar}"></section>
+
+<div class="col-md-8" style="margin:10px auto 5px">
+    <a class="btn custom_update_btn" style="margin:10px 3px 5px"
+       th:href="@{'/users/all'}">All</a>
+    <a class="btn custom_update_btn text-capitalize" style="margin:10px 3px 5px"
+       th:each="status : ${T(uz.test.abitur.enums.Status).values()}"
+       th:href="@{'/users/all?status='+${status}}" th:text="${status.name().toLowerCase()}"/>
+</div>
+
+<div class="row">
+    <div class="col-md-8" style="margin: auto">
+        <table class="table table-striped" style="margin-top: 20px">
+            <thead>
+            <tr style="width: 100%">
+                <th style="width: 2%">T/r</th>
+                <th style="width: 10%">First Name</th>
+                <th style="width: 25%">Last Name</th>
+                <th style="width: 13%">Phone Number</th>
+                <th style="width: 13%">Role</th>
+                <th style="width: 13%">Status</th>
+                <th style="width: 13%">Created At</th>
+                <th style="width: 12%">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user,cnt : ${users}">
+                <td th:text="${cnt.count}"></td>
+                <td th:text="${user.firstName}"></td>
+                <td th:text="${user.lastName}"></td>
+                <td th:text="${user.phoneNumber}"></td>
+                <td th:text="${user.role}"></td>
+                <td th:text="${user.status}"></td>
+                <td th:text="${#temporals.format(user.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
+                <td >
+                    <button class="btn custom_update_btn " data-bs-target="#updateUserModal" data-bs-toggle="modal"
+                            th:onclick="update_user([[${user.id}]])"
+                            th:if="${ user.status ne T(uz.test.abitur.enums.Status).DELETED and (user.role ne T(uz.test.abitur.enums.Role).ADMIN) }">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="modal fade" id="updateUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-center" id="exampleModalUpdate">Update User</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" th:action="@{/users/update}">
+                <div class="modal-body">
+                    <input type="hidden" class="form-control" id="u_id" name="id">
+                    <div class="mb-3">
+                        <p id="u_name"></p>
+                    </div>
+                    <div class="mb-3">
+                        <select class="form-select" aria-label="Default select example" name="status" id="u_status">
+                            <option class="text-capitalize" th:each=" stst : ${T(uz.test.abitur.enums.Status).values()}"
+                                    th:value="${stst}" th:text="${stst.name()}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn custom_close_btn" data-bs-dismiss="modal" autofocus>Close</button>
+                    <button type="submit" class="btn custom_update_btn ">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/main.js}"></script>
+<section th:replace="~{fragments :: js_links}">
+</section>
+</body>
+</html>

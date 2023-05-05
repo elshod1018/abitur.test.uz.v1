@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments :: head(~{::title},~{::link})}">
+    <meta charset="UTF-8">
+    <title>Questions</title>
+    <link rel="stylesheet" href="">
+
+</head>
+<body onload="draw_password_area()">
+<section th:replace="~{fragments :: navbar}"></section>
+<div class="col-md-4" style="margin: 20px auto 0">
+    <ul>
+        <li style="display:inline-block;width: 40%;margin: auto;">
+            <button class="btn btn-link" type="button" onclick="draw_password_area()"
+                    style="color: rgb(29, 45, 91)">
+                <i class="fa fa-lock"></i> Change password
+            </button>
+        </li>
+
+        <li style="display:inline-block;width: 40%;margin: auto;">
+            <button class="btn btn-link" type="button" onclick="draw_phone_area()"
+                    style="color: rgb(29, 45, 91)">
+                <i class="fa fa-phone"></i> Change Phone Number
+            </button>
+        </li>
+    </ul>
+</div>
+<div class="col-md-4" style="margin: auto" th:if="${passwordError ne null}">
+    <div class="alert alert-danger" role="alert">
+        <strong th:text="${passwordError}"></strong>
+    </div>
+</div>
+
+<div class="col-md-4" id="reset_password" style="margin: auto">
+</div>
+
+<div class="col-md-4" id="change_phone" style="margin: auto">
+
+</div>
+
+
+<script th:src="@{/js/main.js}"></script>
+<section th:replace="~{fragments :: js_links}">
+</section>
+</body>
+</html>
