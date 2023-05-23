@@ -21,9 +21,7 @@ public class DocumentSavedEventListener {
     private final DocumentService documentService;
 
     @Async
-    @EventListener(value = DocumentSavedEvent.class
-            /*condition = "(#event.file ne null) and (#event.document ne null)",*/
-            )
+    @EventListener(value = DocumentSavedEvent.class)
     public void documentSavedEventListener(DocumentSavedEvent event) throws IOException {
         File file = event.getFile();
         Document document = event.getDocument();

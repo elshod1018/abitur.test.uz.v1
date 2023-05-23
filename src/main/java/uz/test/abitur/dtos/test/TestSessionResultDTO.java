@@ -1,9 +1,6 @@
 package uz.test.abitur.dtos.test;
-
 import lombok.*;
 import uz.test.abitur.dtos.subject.SubjectShowDTO;
-
-
 @Getter
 @Setter
 @Builder
