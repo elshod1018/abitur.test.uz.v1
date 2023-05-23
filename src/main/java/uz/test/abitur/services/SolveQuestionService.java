@@ -28,19 +28,19 @@ public class SolveQuestionService {
         SubjectShowDTO fourthSubject = dto.getFourthSubject();
         SubjectShowDTO fifthSubject = dto.getFifthSubject();
         if (firstSubject != null) {
-            save(firstSubject.getId(), dto.getId(), 2);
+            save(firstSubject.getId(), dto.getId(), 5);
         }
         if (secondSubject != null) {
-            save(secondSubject.getId(), dto.getId(), 2);
+            save(secondSubject.getId(), dto.getId(), 5);
         }
         if (thirdSubject != null) {
-            save(thirdSubject.getId(), dto.getId(), 1);
+            save(thirdSubject.getId(), dto.getId(), 3);
         }
         if (fourthSubject != null) {
-            save(fourthSubject.getId(), dto.getId(), 1);
+            save(fourthSubject.getId(), dto.getId(), 3);
         }
         if (fifthSubject != null) {
-            save(fifthSubject.getId(), dto.getId(), 1);
+            save(fifthSubject.getId(), dto.getId(), 3);
         }
     }
 
