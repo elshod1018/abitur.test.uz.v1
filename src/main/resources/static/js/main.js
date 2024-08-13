@@ -1,5 +1,5 @@
-// var baseHost = 'http://localhost:8080';
-var baseHost = 'https://abiturtestuz-v1.up.railway.app'
+let baseHost = 'http://localhost:8080';
+// var baseHost = 'https://abiturtestuz-v1.up.railway.app'
 function update_s(subject_id) {
     fetch(baseHost + '/subjects/get/' + subject_id)
         .then(response => response.json())

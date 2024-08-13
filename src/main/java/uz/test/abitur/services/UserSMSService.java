@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import uz.test.abitur.domains.AuthUser;
 import uz.test.abitur.domains.UserSMS;
 import uz.test.abitur.repositories.UserSMSRepository;
+import uz.test.abitur.utils.BaseUtils;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +13,8 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class UserSMSService {
     private final UserSMSRepository userSMSRepository;
+    private final TwilioService twilioService;
+    private final BaseUtils baseUtils;
 
     public UserSMS sendSMSCode(AuthUser user) {
         String userId = user.getId();
@@ -24,10 +27,10 @@ public class UserSMSService {
                 this.update(userSMS);
             }
         }
-        String smsCode ="666666"; /*baseUtils.generateCode()*/;
+        String smsCode = baseUtils.generateCode();
         userSMS = this.save(userId, smsCode);
-       /* smsCode=smsCode.substring(0,3)+" "+smsCode.substring(3);
-        twilioService.sendSMS(user.getPhoneNumber(), smsCode);*/
+        smsCode = smsCode.substring(0, 3) + " " + smsCode.substring(3);
+        twilioService.sendSMS(user.getPhoneNumber(), smsCode);
         return userSMS;
     }
 

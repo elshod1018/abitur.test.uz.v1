@@ -43,7 +43,7 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:postgresql://localhost:5432/abitur?currentSchema=test_uz
+    url: jdbc:postgresql://localhost:5432/abitur
     username: postgres
     password: 123
     driverClassName: org.postgresql.Driver
@@ -59,9 +59,9 @@ firebase:
   auth_provider_x509_cert_url: https://www.googleapis.com/oauth2/v1/certs
   client_x509_cert_url: https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-knvz4%40abitur-test-uz.iam.gserviceaccount.com
 twilio:
-  sid: AC2bb44224a936e48aba3f3523f31ca8de
-  token: 25244495cda28fb44d949f200b6264de
+  sid: AC9f3e633fc9806712738add3da4b71620
+  token: 7220e252f70a56b5b366a3fa9cda2ec8
   from:
-    number: '+16204458192'
+    number: '+12518424869'
 super_admin_1: '+998934568461'
 super_admin_2: '+998930815351'
